@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>求籤問卜 - 每日問卦指引</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Traditional Chinese Calligraphy and Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;600;700&family=Noto+Serif+TC:wght=600;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="flex justify-center items-center min-h-screen text-white p-4 sm:p-8 bg-gradient-to-b from-[#1c0204] via-[#0f0102] to-[#050000]">
+
+    <!-- Main Clean Container for modern Web App -->
+    <div class="relative w-full max-w-lg min-h-[85vh] bg-[#2a0406]/40 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-[#521315]/40 p-6 sm:p-8">
+        
+        <!-- Navigation Bar (Clean & Transparent) -->
+        <div class="w-full flex justify-between items-center z-20 mb-4">
+            <button id="backBtn" aria-label="返回抽籤首頁" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 active:scale-95 flex items-center justify-center transition border border-white/10" onclick="resetToHome()">
+                <i class="fa-solid fa-chevron-left text-sm text-white/80"></i>
+            </button>
+            <span class="text-xs font-semibold tracking-widest text-amber-500/80 calligraphy-font bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">每日一籤 · 逢凶化吉</span>
+        </div>
+
+        <!-- Background Ornament SVG Wavy Lines -->
+        <div class="absolute inset-0 pointer-events-none opacity-20 z-0">
+            <!-- Left wavy ornament -->
+            <svg class="absolute top-12 left-0 w-32 h-96 text-amber-500/30" viewBox="0 0 100 400" fill="none">
+                <path d="M-20,0 C20,50 -20,100 30,150 C80,200 0,250 50,300 C100,350 40,400 90,450" stroke="currentColor" stroke-width="2" />
+                <path d="M-30,20 C10,70 -30,120 20,170 C70,220 -10,270 40,320 C90,370 30,420 80,470" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+            <!-- Right wavy ornament -->
+            <svg class="absolute top-12 right-0 w-32 h-96 text-amber-500/30 transform scale-x-[-1]" viewBox="0 0 100 400" fill="none">
+                <path d="M-20,0 C20,50 -20,100 30,150 C80,200 0,250 50,300 C100,350 40,400 90,450" stroke="currentColor" stroke-width="2" />
+                <path d="M-30,20 C10,70 -30,120 20,170 C70,220 -10,270 40,320 C90,370 30,420 80,470" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+        </div>
+
+        <!-- Top Section: Calligraphy Logo & Title -->
+        <div class="flex flex-col items-center mt-2 z-10">
+            <!-- Calligraphy Header "求籤問卜" with elegant stamp styling -->
+            <div class="flex items-center gap-3 relative">
+                <h1 class="text-4xl sm:text-5xl font-black tracking-[0.2em] text-[#f3d393] calligraphy-font drop-shadow-[0_4px_10px_rgba(243,211,147,0.15)] pl-[0.2em]">求籤問卜</h1>
+                <!-- Red Stamp Graphic -->
+                <div class="absolute -right-12 -top-2 w-8 h-8 bg-red-700/80 rounded-sm border border-red-500 flex items-center justify-center rotate-6 shadow-md shadow-red-950/50">
+                    <span class="text-[9px] font-black text-amber-100/90 calligraphy-font tracking-tighter leading-none text-center">每日<br>問卦</span>
+                </div>
+            </div>
+            <p id="titleHeader" aria-live="polite" class="text-xs font-light text-amber-200/50 tracking-[0.25em] mt-3 transition-all duration-300">每日問卦指引 · 虔心誠意 · 解惑前路</p>
+        </div>
+
+        <!-- Main Dynamic Content Container -->
+        <div class="flex-1 relative z-10 flex flex-col justify-between mt-6">
+            
+            <!-- VIEW 1: Cylinder Drawing Page -->
+            <div id="cylinderView" class="flex-1 flex flex-col justify-between transition-all duration-500">
+                
+                <!-- Cylinder Interactive Central Area -->
+                <div class="relative flex justify-center items-center my-6 h-[340px]">
+                    
+                    <!-- Wrapper for perfectly synchronized shaking (Cylinder + Sticks inside) -->
+                    <div id="shakeWrapper" class="relative w-full max-w-[280px] flex flex-col items-center justify-end h-full transform-gpu transition-all duration-300">
+                        
+                        <!-- Floating gold particles around cylinder -->
+                        <div class="absolute inset-0 pointer-events-none flex justify-center items-center">
+                            <div class="absolute w-2 h-2 bg-amber-400/40 rounded-full particle" style="top: 25%; left: 20%; animation-delay: 0.2s;"></div>
+                            <div class="absolute w-1.5 h-1.5 bg-yellow-300/30 rounded-full particle" style="top: 45%; right: 15%; animation-delay: 0.8s;"></div>
+                            <div class="absolute w-2.5 h-2.5 bg-yellow-200/20 rounded-full particle" style="top: 15%; right: 25%; animation-delay: 1.5s;"></div>
+                        </div>
+
+                        <!-- Bamboo sticks fanned out beautifully (Initial state: deep inside, matched to S__23871516) -->
+                        <div id="sticksGroup" class="absolute bottom-[115px] w-48 h-64 flex justify-center items-end pointer-events-none transition-all duration-500 z-0">
+                            
+                            <!-- Stick 1 (Leftmost, fanned left - Deep initial state) -->
+                            <div class="absolute w-7 h-64 transform origin-bottom -rotate-12 -translate-x-12 translate-y-[45px] transition-all duration-300">
+                                <svg viewBox="0 0 30 250" class="w-full h-full">
+                                    <defs>
+                                        <linearGradient id="stickGradLeft" x1="0" y1="1" x2="0" y2="0">
+                                            <stop offset="0%" stop-color="#f8cca8"/>
+                                            <stop offset="60%" stop-color="#f39b79"/>
+                                            <stop offset="90%" stop-color="#b33a34"/>
+                                            <stop offset="100%" stop-color="#45070a"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M 8,0 L 22,0 L 22,15 C 19,15 19,21 22,21 L 22,25 C 19,25 19,31 22,31 L 22,35 C 19,35 19,41 22,41 L 22,250 L 8,250 L 8,41 C 11,41 11,35 8,35 L 8,31 C 11,31 11,25 8,25 L 8,21 C 11,21 11,15 8,15 Z" fill="url(#stickGradLeft)"/>
+                                    <rect x="8" y="55" width="14" height="4" fill="#c42126" />
+                                </svg>
+                            </div>
+
+                            <!-- Stick 2 (Mid-left, fanned left-mid - Deep initial state) -->
+                            <div class="absolute w-7 h-64 transform origin-bottom -rotate-6 -translate-x-6 translate-y-[45px] transition-all duration-300">
+                                <svg viewBox="0 0 30 250" class="w-full h-full">
+                                    <path d="M 8,0 L 22,0 L 22,15 C 19,15 19,21 22,21 L 22,25 C 19,25 19,31 22,31 L 22,35 C 19,35 19,41 22,41 L 22,250 L 8,250 L 8,41 C 11,41 11,35 8,35 L 8,31 C 11,31 11,25 8,25 L 8,21 C 11,21 11,15 8,15 Z" fill="url(#stickGradLeft)"/>
+                                    <rect x="8" y="55" width="14" height="4" fill="#c42126" />
+                                </svg>
+                            </div>
+                            
+                            <!-- Stick 3 (CENTRAL LUCKY STICK, rises up on draw - Deep initial state) -->
+                            <div id="luckyStick" class="absolute w-7 h-64 transform origin-bottom translate-y-[45px] transition-all duration-300 z-10">
+                                <svg viewBox="0 0 30 250" class="w-full h-full">
+                                    <defs>
+                                        <linearGradient id="luckyStickGrad" x1="0" y1="1" x2="0" y2="0">
+                                            <stop offset="0%" stop-color="#fae2cd"/>
+                                            <stop offset="50%" stop-color="#fcab88"/>
+                                            <stop offset="85%" stop-color="#ca3c34"/>
+                                            <stop offset="100%" stop-color="#54080b"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M 8,0 L 22,0 L 22,15 C 19,15 19,21 22,21 L 22,25 C 19,25 19,31 22,31 L 22,35 C 19,35 19,41 22,41 L 22,250 L 8,250 L 8,41 C 11,41 11,35 8,35 L 8,31 C 11,31 11,25 8,25 L 8,21 C 11,21 11,15 8,15 Z" fill="url(#luckyStickGrad)"/>
+                                    <!-- Slightly wider glowing red ring for lucky stick -->
+                                    <rect x="8" y="53" width="14" height="6" fill="#dc2626" />
+                                </svg>
+                            </div>
+                            
+                            <!-- Stick 4 (Mid-right, fanned right-mid - Deep initial state) -->
+                            <div class="absolute w-7 h-64 transform origin-bottom rotate-6 translate-x-6 translate-y-[45px] transition-all duration-300">
+                                <svg viewBox="0 0 30 250" class="w-full h-full">
+                                    <path d="M 8,0 L 22,0 L 22,15 C 19,15 19,21 22,21 L 22,25 C 19,25 19,31 22,31 L 22,35 C 19,35 19,41 22,41 L 22,250 L 8,250 L 8,41 C 11,41 11,35 8,35 L 8,31 C 11,31 11,25 8,25 L 8,21 C 11,21 11,15 8,15 Z" fill="url(#stickGradLeft)"/>
+                                    <rect x="8" y="55" width="14" height="4" fill="#c42126" />
+                                </svg>
+                            </div>
+
+                            <!-- Stick 5 (Rightmost, fanned right - Deep initial state) -->
+                            <div class="absolute w-7 h-64 transform origin-bottom rotate-12 translate-x-12 translate-y-[45px] transition-all duration-300">
+                                <svg viewBox="0 0 30 250" class="w-full h-full">
+                                    <path d="M 8,0 L 22,0 L 22,15 C 19,15 19,21 22,21 L 22,25 C 19,25 19,31 22,31 L 22,35 C 19,35 19,41 22,41 L 22,250 L 8,250 L 8,41 C 11,41 11,35 8,35 L 8,31 C 11,31 11,25 8,25 L 8,21 C 11,21 11,15 8,15 Z" fill="url(#stickGradLeft)"/>
+                                    <rect x="8" y="55" width="14" height="4" fill="#c42126" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Octagonal wooden cylinder (籤筒 - Perfectly covers the deep sticks as per S__23871516) -->
+                        <div id="cylinder" class="relative w-52 h-64 cursor-pointer select-none group transform-gpu transition-all duration-300 z-10">
+                            <!-- Cylinder Base Shadows -->
+                            <div class="absolute -bottom-2 left-4 right-4 h-5 bg-black/60 blur-md rounded-full"></div>
+                            
+                            <!-- Cylinder Tapered Wrapper -->
+                            <div class="absolute inset-0 overflow-hidden" style="clip-path: polygon(4% 0%, 96% 0%, 82% 100%, 18% 100%);">
+                                <!-- 5 visible vertical facets mimicking a gorgeous 3D octagon lacquer finish -->
+                                <div class="absolute inset-0 flex">
+                                    <!-- Facet 1: Leftmost Shadow -->
+                                    <div class="w-[20%] h-full bg-gradient-to-b from-[#400305] via-[#2d0102] to-[#120000]"></div>
+                                    <!-- Facet 2: Medium Left Shadow -->
+                                    <div class="w-[20%] h-full bg-gradient-to-b from-[#8c181c] via-[#5c0b0e] to-[#2b0204]"></div>
+                                    <!-- Facet 3: Bright Center Highlight -->
+                                    <div class="w-[20%] h-full bg-gradient-to-b from-[#d93829] via-[#a31f16] to-[#590508]"></div>
+                                    <!-- Facet 4: Medium Right Shadow -->
+                                    <div class="w-[20%] h-full bg-[#8c181c] bg-gradient-to-b from-[#8c181c] via-[#5c0b0e] to-[#2b0204]"></div>
+                                    <!-- Facet 5: Rightmost Shadow -->
+                                    <div class="w-[20%] h-full bg-gradient-to-b from-[#400305] via-[#2d0102] to-[#120000]"></div>
+                                </div>
+                                
+                                <!-- Top rim horizontal shadow/edge -->
+                                <div class="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-black/60 to-transparent"></div>
+                                
+                                <!-- Two horizontal groove lines near the bottom as seen in S__23871516 -->
+                                <div class="absolute bottom-11 left-0 right-0 h-[3px] bg-black/40"></div>
+                                <div class="absolute bottom-6 left-0 right-0 h-[3px] bg-black/40"></div>
+                            </div>
+
+                            <!-- Centered Double Circular Golden/Orange Badge "點擊抽籤" (S__23871516 / 9053123718241066170.jpeg Style) -->
+                            <div class="absolute top-[42%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 rounded-full p-[4px] bg-gradient-to-br from-[#ef4444] to-[#b91c1c] border-4 border-[#ffb199]/90 shadow-2xl z-20 flex items-center justify-center transition duration-300 group-hover:scale-105 active:scale-95">
+                                <button id="drawBtn" class="w-full h-full rounded-full bg-[#a81418] border-2 border-white/95 flex flex-col items-center justify-center" onclick="triggerDraw()">
+                                    <span class="text-[11px] font-bold text-white/90 tracking-[0.25em] -mr-[0.25em]">點擊</span>
+                                    <span class="text-[18px] font-black text-white tracking-widest mt-[2px] font-sans">抽籤</span>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Bottom Drawer Button -->
+                <div class="bg-white/5 border border-white/10 text-gray-200 rounded-3xl p-5 shadow-2xl flex flex-col items-center gap-4 mt-2">
+                    <button class="w-full bg-[#bd4303] hover:bg-[#a03802] active:scale-98 text-white py-4 px-6 rounded-2xl font-semibold tracking-wide transition shadow-lg shadow-orange-900/40 text-center text-base" onclick="openHistoryModal()">
+                        <i class="fa-solid fa-clock-rotate-left mr-2"></i>查看求籤紀錄
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- VIEW 2: Fortune Result Page (Initially hidden) -->
+            <div id="resultView" class="hidden flex-1 flex flex-col justify-between transition-all duration-500">
+                
+                <!-- Main Fortune Paper Slip Display -->
+                <div class="flex-1 flex flex-col items-center justify-center my-4 relative">
+                    
+                    <!-- Paper Slip Body (S__23871515 / 9053123718241066170.jpeg Inspired) -->
+                    <div class="relative w-64 max-w-full bg-[#fbf9f5] rounded-2xl border-4 border-[#b91c1c] shadow-2xl p-6 text-[#1e293b] flex flex-col items-center overflow-hidden min-h-[320px]">
+                        <!-- Decorative Top Frame Border on slip -->
+                        <div class="w-full border-b-2 border-red-700 pb-2 flex flex-col items-center">
+                            <div class="text-[11px] uppercase tracking-[0.3em] text-red-600 font-bold opacity-80">Daily Oracle Slip</div>
+                            <div class="text-xl font-bold calligraphy-font text-red-700 mt-1">運勢</div>
+                        </div>
+
+                        <!-- Large calligraphy fortune status -->
+                        <div class="flex-1 flex items-center justify-center my-6">
+                            <div id="fortuneBigText" class="text-7xl font-black calligraphy-font text-red-700 tracking-wider filter drop-shadow-[2px_2px_0px_rgba(185,28,28,0.15)]">
+                                大吉
+                            </div>
+                        </div>
+
+                        <!-- Tiny Stamp Graphic -->
+                        <div class="absolute bottom-4 right-4 w-8 h-8 border-2 border-dashed border-red-500/40 rounded flex items-center justify-center rotate-12">
+                            <span class="text-[8px] font-bold text-red-500/40 calligraphy-font">平安</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Bottom Details White Drawer (S__23871515 structure, fully cleared of counts) -->
+                <div class="bg-white text-gray-800 rounded-3xl p-5 shadow-2xl flex flex-col items-center gap-4 border border-gray-100">
+                    <div class="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 mb-1 border border-emerald-100">
+                        <i class="fa-solid fa-check text-xl"></i>
+                    </div>
+
+                    <span class="text-xs tracking-wider text-gray-400 font-semibold uppercase">每日指引已現 · 請細加領會</span>
+                    
+                    <!-- Inspirational Quote Display -->
+                    <p id="fortuneQuote" class="text-center font-semibold text-lg text-red-800 leading-relaxed px-2 calligraphy-font">
+                        「路在前方，心自坦然；泥濘亦是風景。」
+                    </p>
+
+                    <!-- Collapsible Prize / Fortune Info Drawer -->
+                    <div class="w-full border-t border-b border-gray-100 py-3.5">
+                        <button class="w-full flex justify-between items-center text-sm font-semibold text-gray-500 hover:text-gray-700 px-2" onclick="toggleDetails()">
+                            <span>本籤意涵與指引</span>
+                            <i id="detailsArrow" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
+                        </button>
+                        <div id="detailsDrawer" class="hidden text-xs text-gray-500 px-2 mt-2 leading-relaxed space-y-1">
+                            <p>🧭 本籤詩為您本日的問卦指引。日常中，請保持良善與包容心。</p>
+                            <p>🧭 無論身處順境逆境，平穩前進，心之所向皆能如願圓滿。</p>
+                        </div>
+                    </div>
+
+                    <!-- Cleaned Button (No Chance count display) -->
+                    <button class="w-full bg-[#bd4303] hover:bg-[#a03802] active:scale-98 text-white py-4 px-6 rounded-2xl font-semibold tracking-wide transition shadow-lg shadow-orange-700/20 text-center flex items-center justify-center gap-2 text-base" onclick="resetToHome()">
+                        <span>再求一籤，心誠則靈</span>
+                        <i class="fa-solid fa-star text-sm animate-pulse"></i>
+                    </button>
+                    
+                    <span class="text-[10px] text-gray-400 font-medium text-center">求籤紀錄保存在此瀏覽器；清除瀏覽資料後將無法保留</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--求籤紀錄 Modal Panel-->
+        <div id="historyModal" class="hidden absolute inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+            <div class="w-full max-w-md bg-[#faf8f5] text-gray-800 rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col max-h-[80%] border-t sm:border border-amber-500/30 overflow-hidden transform transition-all duration-300">
+                
+                <!-- Modal Header -->
+                <div class="p-5 border-b border-gray-200 bg-[#5a1012] text-white flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left text-amber-300"></i>
+                        <h3 class="font-bold text-lg calligraphy-font">歷史求籤紀錄</h3>
+                    </div>
+                    <button class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition" onclick="closeHistoryModal()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div id="historyList" class="p-5 overflow-y-auto flex-1 space-y-3 min-h-[250px]">
+                    <!-- Dynamic injection -->
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="p-4 bg-gray-50 border-t border-gray-100 flex gap-3">
+                    <button class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 rounded-xl text-sm font-semibold transition" onclick="clearHistory()">
+                        清除歷史
+                    </button>
+                    <button class="flex-1 bg-[#5a1012] hover:bg-[#450a0a] text-white py-3 rounded-xl text-sm font-semibold transition" onclick="closeHistoryModal()">
+                        關閉
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="./app.js" defer></script>
+</body>
+</html>
